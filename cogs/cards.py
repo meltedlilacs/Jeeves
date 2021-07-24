@@ -187,6 +187,10 @@ class CardCog(commands.Cog):
         # The 'url', where we will put a link to the NRDB card.
         url = f"https://netrunnerdb.com/en/card/{card['code']}"
 
+        thumbnail_url = f"https://netrunnerdb.com/card_image/large/{card['code']}.jpg"
+        if title == "En Passant":
+            thumbnail_url = f"https://cdn.discordapp.com/attachments/732385125039472692/868392291696533504/holy_hell.png"
+
         # The 'description', where we will put the text of the card in. Note that text comming from NRDB
         # uses HTML tags for some reason, which looks ugly in Discord, so convert to Markdown first.
         card_type = 'ICE' if card['type_code'] == 'ice' else card['type_code'].title()
@@ -215,7 +219,7 @@ class CardCog(commands.Cog):
         embed.set_footer(text=misc_info)
 
         # The 'thumbnail', where we will put the card image in.
-        embed.set_thumbnail(url=f"https://netrunnerdb.com/card_image/large/{card['code']}.jpg")
+        embed.set_thumbnail(url=thumbnail_url)
 
         return embed
 
@@ -224,6 +228,8 @@ class CardCog(commands.Cog):
         color = self.generate_color_for_faction(card['faction_code'])
         embed = discord.Embed(title=title, url=f"https://netrunnerdb.com/en/card/{card['code']}", color=color)
         embed.set_image(url=f"https://netrunnerdb.com/card_image/large/{card['code']}.jpg")
+        if title == 'En Passant':
+            embed.set_image(url=f"https://cdn.discordapp.com/attachments/732385125039472692/868392291696533504/holy_hell.png")
         return embed
 
     def generate_flavor(self, card) -> discord.Embed:
@@ -234,12 +240,18 @@ class CardCog(commands.Cog):
             (txt, e) = self.clean_card_text(card['flavor'])
             flavor = f"*{txt}*"
 
+        icon = f"https://netrunnerdb.com/card_image/small/{card['code']}.jpg"
+
         # let maxx swear!
-        if card['title'] == "MaxX: Maximum Punk Rock":
+        if title == "MaxX: Maximum Punk Rock":
             flavor = "*Fuck you, motherfucker!*"
+        # en passant meme
+        if title == "En Passant":
+            flavor = '"holy hell." - Jack Weyland'
+            icon = f"https://cdn.discordapp.com/attachments/732385125039472692/868392291696533504/holy_hell.png"
 
         embed = discord.Embed(description=flavor, color=color)
-        embed.set_author(name=title, url=f"https://netrunnerdb.com/en/card/{card['code']}", icon_url=f"https://netrunnerdb.com/card_image/small/{card['code']}.jpg")
+        embed.set_author(name=title, url=f"https://netrunnerdb.com/en/card/{card['code']}", icon_url=icon)
         return embed
 
 
@@ -248,7 +260,7 @@ class CardCog(commands.Cog):
         await message.channel.send('https://cdn.discordapp.com/attachments/732385125039472692/866103176067547156/the_trans_agenda.png')
     @commands.command(name='holy_hell')
     async def holy_hell(self, message):
-        await message.channel.send('https://cdn.discordapp.com/attachments/732385125039472692/868392291696533504/holy_hell.png')
+        await message.channel.send('https://pbs.twimg.com/media/Es7Cn-IXYAQsiXh.jpg:large')
     @commands.command(name='timing')
     async def timing(self, message):
         await message.channel.send('https://cdn.discordapp.com/attachments/653990064207953921/837916163149135882/rulesRUNNNNNNN.png')
