@@ -9,6 +9,8 @@ import unicodedata
 import configparser
 from typing import List, Dict
 
+import string
+
 class CardCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -20,26 +22,26 @@ class CardCog(commands.Cog):
 
         # Emojis thanks to user qwitwa#9367 on Discord!
         self.emojis = {
-            'interrupt': '<:gninterrupt:854706842835615764>',
-            'agenda': '<:gnagenda:854706842814251008>',
-            'click': '<:gnclick:854706842869432330>',
-            'credit': '<:gncredit:854716895966265346>',
-            'mu': '<:gnmu:854706842873757776>',
-            'recurring-credit': '<:gnrecurring:854706842840203295>',
-            'rez': '<:gnrez:854706842642677822>',
-            'trash': '<:gntrashability:854706842905870396>', # TODO - Use both trash and trash cost emojis.
+            'interrupt': '<:interrupt:868360255954878474>',
+            'agenda': '<:agenda:868360255489331231>',
+            'click': '<:click:868360256173006888>',
+            'credit': '<:credit:868360255841648710>',
+            'mu': '<:mu:868360255799689216>',
+            'recurring-credit': '<:recurringcredit:868360256013611008>',
+            'rez': '<:rez:868360256172982302>',
+            'trash': '<:trashability:868360256063963156>', # TODO - Use both trash and trash cost emojis.
             'subroutine': '↳',
-            'link': ' <:gnlink:854706842957512734>', # Yes, there is a space here - the emoji looks *terrible* without it.
-            'weyland-consortium': '<:nrweyland:744275191714152548>',
-            'jinteki': '<:nrjinteki:744275192074993734>',
-            'haas-bioroid': '<:nrhaasbioroid:744275192142102600>',
-            'nbn': '<:nrnbn:744275191856758891>',
-            'anarch': '<:nranarch:744275191433134135>',
-            'shaper': '<:nrshaper:744275192028856430>',
-            'criminal': '<:nrcriminal:744275191974330440>',
-            'apex': '<:nrapex:744275777842970716>',
-            'adam': '<:nradam:744275777926856755>',
-            'sunny-lebeau': '<:nrsunny:744275778073788536>'
+            'link': ' <:link:868360255820677120>', # Yes, there is a space here - the emoji looks *terrible* without it.
+            'weyland-consortium': '<:weyland:868360256235900988>',
+            'jinteki': '<:jinteki:868360256454033439>',
+            'haas-bioroid': '<:hb:868360256173015090>',
+            'nbn': '<:nbn:868360256084926505>',
+            'anarch': '<:anarch:868360255397036053>',
+            'shaper': '<:shaper:868360255996829707>',
+            'criminal': '<:criminal:868360255917150219>',
+            'apex': '<:apex:868360255745196073>',
+            'adam': '<:adam:868360255522897992>',
+            'sunny-lebeau': '<:sunnylebeau:868360256160403456>'
         }
 
         self.config = configparser.ConfigParser()
@@ -294,6 +296,9 @@ class CardCog(commands.Cog):
             flavors = [ self.generate_flavor(self.cards[c]) for c in queries ]
             for f in flavors:
                 await message.channel.send(embed=f)
+
+        if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "thanks jeeves":
+            await message.channel.send("My pleasure, sir.")
 
 def setup(bot):
     bot.add_cog(CardCog(bot))
