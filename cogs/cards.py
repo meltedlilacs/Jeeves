@@ -281,7 +281,7 @@ class CardCog(commands.Cog):
         flavor_results = re.findall('<<(.*?)>>', message.content)
 
         # snare time!
-        if len(embed_results) + len(image_results) + len(flavor_results) > 0 and random.random() > 0:
+        if len(embed_results) + len(image_results) + len(flavor_results) > 0 and random.random() < 0.01:
             await message.channel.send(f"Take 1 tag and 3 net damage {message.author.mention}!", embed=self.generate_image(self.cards[self.search_card("Snare!")]))
             return
 
