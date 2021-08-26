@@ -10,6 +10,7 @@ import configparser
 from typing import List, Dict
 
 import string
+import random
 
 class CardCog(commands.Cog):
     def __init__(self, bot):
@@ -278,6 +279,11 @@ class CardCog(commands.Cog):
         embed_results = re.findall('\[\[(.*?)\]\]', message.content)
         image_results = re.findall('\{\{(.*?)\}\}', message.content)
         flavor_results = re.findall('<<(.*?)>>', message.content)
+
+        # snare time!
+        if len(embed_results) + len(image_results) + len(flavor_results) > 0 and random.random() > 0:
+            await message.channel.send(f"Take 1 tag and 3 net damage {message.author.mention}!", embed=self.generate_image(self.cards[self.search_card("Snare!")]))
+            return
 
         if len(embed_results) > 0:
             queries = [ self.search_card(self.strip_accents(q)) for q in embed_results[:self.config.getint('Configuration', 'MaxSearches')] ]
